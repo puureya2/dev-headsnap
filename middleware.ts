@@ -25,6 +25,14 @@ export async function middleware(request: NextRequest) {
     }
   );
 
+  // Handle auth callback — Supabase redirects code to root, we forward it
+  const code = request.nextUrl.searchParams.get("code");
+  if (code && request.nextUrl.pathname === "/") {
+    const url = request.nextUrl.clone();
+    url.pathname = "/api/auth/callback";
+    return NextResponse.redirect(url);
+  }
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
