@@ -42,11 +42,9 @@ export async function POST(request: NextRequest) {
             .eq("user_id", userId);
 
           // Trigger generation
-          const vercelUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null;
-
           const appUrl =
             process.env.NEXT_PUBLIC_APP_URL ||
-            vercelUrl ||
+            (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
             "https://headsnap.vercel.app";
           await fetch(`${appUrl}/api/generate`, {
             method: "POST",

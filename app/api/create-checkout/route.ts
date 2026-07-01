@@ -23,13 +23,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Missing generationId" }, { status: 400 });
     }
 
-    const vercelUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null;
-
     const appUrl =
       process.env.NEXT_PUBLIC_APP_URL ||
-      vercelUrl ||
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
       `https://${request.headers.get("x-forwarded-host") || request.headers.get("host")}` ||
-      "http://localhost:3000";
+      "https://headsnap.vercel.app";
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],

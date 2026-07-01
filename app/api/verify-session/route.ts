@@ -45,13 +45,11 @@ export async function GET(request: NextRequest) {
     }
 
     // Trigger generation in background (fire and forget)
-    const vercelUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null;
-
     const appUrl =
       process.env.NEXT_PUBLIC_APP_URL ||
-      vercelUrl ||
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
       `https://${request.headers.get("x-forwarded-host") || request.headers.get("host")}` ||
-      "http://localhost:3000";
+      "https://headsnap.vercel.app";
     fetch(`${appUrl}/api/generate`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
