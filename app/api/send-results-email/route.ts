@@ -24,9 +24,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Generation not complete" }, { status: 400 });
     }
 
+    const vercelUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null;
+
     const appUrl =
       process.env.NEXT_PUBLIC_APP_URL ||
-      process.env.VERCEL_URL ||
+      vercelUrl ||
       "https://headsnap.vercel.app";
     const resultsUrl = `${appUrl}/results/${generationId}`;
     const count = generation.result_urls?.length ?? 0;
