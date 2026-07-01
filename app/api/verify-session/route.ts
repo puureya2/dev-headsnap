@@ -45,7 +45,11 @@ export async function GET(request: NextRequest) {
     }
 
     // Trigger generation in background (fire and forget)
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const appUrl =
+      process.env.NEXT_PUBLIC_APP_URL ||
+      process.env.VERCEL_URL ||
+      `https://${request.headers.get("host")}` ||
+      "http://localhost:3000";
     fetch(`${appUrl}/api/generate`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
